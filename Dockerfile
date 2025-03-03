@@ -1,20 +1,20 @@
-# Use ARM64-compatible Node.js image
-FROM arm64v8/node:18
+# Use the latest Node.js image
+FROM node:22-alpine
 
-# Set working directory
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy package files
+# Copy package files first (for better caching)
 COPY package.json package-lock.json* ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --production
 
-# Copy the rest of the application
+# Copy the rest of the project files
 COPY . .
 
-# Expose any required ports (if applicable)
+# Expose port (if needed)
 EXPOSE 3000
 
 # Start the bot
-CMD ["npm", "start"]
+CMD ["bash", "start.sh"]
